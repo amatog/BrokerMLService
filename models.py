@@ -16,6 +16,7 @@ class PortfolioRiskRequest(BaseModel):
     - Java schickt direkt eine Liste von Positionen (z.B. aus Alpaca-API)
     Beide Varianten werden unterstützt.
     """
+    cash: float = Field(default=0, ge=0, allow_inf_nan=False)
     portfolio_id: Optional[int] = Field(
         default=None,
         description="ID des Portfolios in der DB"

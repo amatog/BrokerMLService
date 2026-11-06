@@ -38,6 +38,14 @@ class ReviewFixTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_training_params(100, 30, 3, ["AAPL"])
 
+    def test_risk_retains_deployed_cash_support(self):
+        code, result = call("/risk", "POST", {"cash": 80, "positions": [
+            {"symbol": "AAPL", "quantity": 2, "last_price": 10}]})
+        self.assertEqual(code, 200)
+        self.assertEqual(result["total_value"], 100)
+        self.assertAlmostEqual(result["concentration"], 0.2)
+        self.assertEqual(call("/risk", "POST", {"cash": -1, "positions": []})[0], 400)
+
     def test_training_lock_prevents_duplicate_job(self):
         from pathlib import Path
         with tempfile.TemporaryDirectory() as root, patch.dict(os.environ, {

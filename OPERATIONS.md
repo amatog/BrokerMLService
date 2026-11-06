@@ -1,8 +1,8 @@
 # Servicebetrieb nach dem Review
 
-Abhängigkeiten: `python -m pip install -r requirements.txt`; lokaler Start: `python run_local.py`.
+Abhängigkeiten: `python -m pip install -r requirements.txt`; lokaler Start: `python run_local.py`. Passenger verwendet `passenger_wsgi.py`, lädt die serverlokale `.env` und unterstützt ein isoliertes `.vendor`-Verzeichnis für Deployment-Abhängigkeiten.
 
-- `POST /risk`: JSON mit `positions` (maximal 1000) und optional `portfolio_id`. Jede Position benötigt `symbol`, positive endliche `quantity` und `last_price`. Der vorhandene heuristische Algorithmus ist angebunden; er ist keine Inferenz des trainierten Random Forest. Datenbankbasierte Inferenz und Short-Positionen sind nicht aktiviert.
+- `POST /risk`: JSON mit `positions` (maximal 1000), optional nichtnegativem `cash` und optional `portfolio_id`. Jede Position benötigt `symbol`, positive endliche `quantity` und `last_price`. Cash fließt wie im bisherigen Server-Einstiegspunkt in Gesamtwert, Konzentration und Heuristik ein. Der Algorithmus ist keine Inferenz des trainierten Random Forest. Datenbankbasierte Inferenz und Short-Positionen sind nicht aktiviert.
 - `GET /trend`: HTTP 501, solange kein Trendmodell implementiert ist.
 - `GET /health`: Status und tatsächlich verfügbare Funktionen.
 - `POST /train-risk-model`: nur mit `Authorization: Bearer <ML_ADMIN_TOKEN>`. Ohne konfigurierten Token ist Training abgeschaltet. Nur lokal oder hinter einem HTTPS-Proxy betreiben.
@@ -13,4 +13,4 @@ Trainingsfeatures verwenden ausschließlich die letzten 63 Handelstage bis zum B
 
 Modelle und Featurelisten werden als unveränderliches Paar in einem neuen `run_*`-Verzeichnis geschrieben. Erst danach ersetzt der Dienst `current.json` atomar. Konsumenten müssen diesem Manifest folgen; alte feste Dateinamen im Wurzelverzeichnis werden nicht mehr überschrieben. Alte Versionen bleiben erhalten.
 
-Tests: `python -m unittest discover -s tests -v` (6 Tests mit synthetischen Kursen, ohne Finnhub-Zugriff).
+Tests: `python -m unittest discover -s tests -v` (7 Tests mit synthetischen Kursen, ohne Finnhub-Zugriff).

@@ -42,7 +42,7 @@ def application(environ, start_response):
             req = PortfolioRiskRequest(**read_body(environ))
             if req.positions is None:
                 raise ValueError("positions must be supplied; database inference is not enabled")
-            result = compute_risk_from_positions(req.positions)
+            result = compute_risk_from_positions(req.positions, cash=req.cash)
             result.update(portfolio_id=req.portfolio_id, method="heuristic")
             return json_response(start_response, 200, result)
         if path == "/trend" and method == "GET":
