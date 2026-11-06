@@ -68,7 +68,7 @@ def compute_risk_from_positions(positions: List[Position]) -> Dict:
     explanation = (
         f"Portfolio hat {num_positions} Position(en) mit einem Gesamtwert von {total_value:.2f}. "
         f"Die größte Einzelposition macht {max_weight:.1%} des Portfoliowertes aus. "
-        f"Daraus wird ein modellbasierter Risiko-Score von {risk_score} (0–100) abgeleitet "
+        f"Daraus wird ein heuristischer Risiko-Score von {risk_score} (0–100) abgeleitet "
         f"und als Risikoniveau '{risk_level}' klassifiziert. "
         "Hinweis: Modellbasierte Risiko-Einschätzung, keine Anlageberatung."
     )

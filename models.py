@@ -4,8 +4,8 @@ from pydantic import BaseModel, Field
 
 class Position(BaseModel):
     symbol: str
-    quantity: float
-    last_price: float
+    quantity: float = Field(gt=0, allow_inf_nan=False)
+    last_price: float = Field(gt=0, allow_inf_nan=False)
     sector: Optional[str] = None
 
 class PortfolioRiskRequest(BaseModel):
@@ -22,6 +22,7 @@ class PortfolioRiskRequest(BaseModel):
     )
     positions: Optional[List[Position]] = Field(
         default=None,
+        max_length=1000,
         description="Optional: Positionen direkt mitliefern, falls keine DB genutzt wird"
     )
 
